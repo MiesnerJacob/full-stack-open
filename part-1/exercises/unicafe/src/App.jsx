@@ -8,7 +8,18 @@ const Button = ({ onClick, text }) => {
   )
 }
 
-const Statistics = ({ text, stat }) => <p>{text} {stat}</p>
+const Statistics = (props) => {
+  return (
+    <div>
+      <p>good {props.good}</p>
+      <p>netural {props.neutral}</p>
+      <p>bad {props.bad}</p>
+      <p>total {props.total}</p>
+      <p>average {props.average}</p>
+      <p>positive {props.pctPositive}</p>
+    </div>
+  )
+}
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -42,7 +53,7 @@ const App = () => {
     const nums = [...goods, ...neutrals, ...bads]
 
     if (nums.length === 0) {
-      return 'No ratings submmitted yet...'
+      return 'No feedback given'
     }
 
     const numsSum = nums.reduce((acc, val) => acc + val, 0)
@@ -53,7 +64,7 @@ const App = () => {
   const calculatePctPositive = ({ good, neutral, bad }) => {
     const totalVotes = (good + neutral + bad)
     if (totalVotes === 0) {
-      return 'No ratings submmitted yet...'
+      return 'No feedback given'
     }
 
     return (good / totalVotes * 100) + '%'
@@ -69,12 +80,14 @@ const App = () => {
       <Button onClick={handleNeutralClick} text='neutral'/>
       <Button onClick={handleBadClick} text='bad'/>
       <h1>statistics</h1>
-      <Statistics text='good' stat={good}/>
-      <Statistics text='neutral' stat={neutral}/>
-      <Statistics text='bad' stat={bad}/>
-      <Statistics text='total' stat={total}/>
-      <Statistics text='average' stat={average}/>
-      <Statistics text='positive' stat={pctPositive}/>
+      <Statistics 
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={total}
+        average={average}
+        pctPositive={pctPositive}
+      />
     </div>
   )
 }
