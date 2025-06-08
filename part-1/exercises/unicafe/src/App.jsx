@@ -8,15 +8,26 @@ const Button = ({ onClick, text }) => {
   )
 }
 
+const StatisticsLine = ({ text, stat }) => {
+  return (
+    <p>{text} {stat}</p>
+  )
+}
+
 const Statistics = (props) => {
+  const totalVotes = (props.good + props.neutral + props.bad)
+  if (totalVotes === 0) {
+    return <p>No feedback given</p>
+  }
+
   return (
     <div>
-      <p>good {props.good}</p>
-      <p>netural {props.neutral}</p>
-      <p>bad {props.bad}</p>
-      <p>total {props.total}</p>
-      <p>average {props.average}</p>
-      <p>positive {props.pctPositive}</p>
+      <StatisticsLine text='good' stat={props.good}/>
+      <StatisticsLine text='neutral' stat={props.neutral}/>
+      <StatisticsLine text='bad' stat={props.bad}/>
+      <StatisticsLine text='total' stat={props.total}/>
+      <StatisticsLine text='average' stat={props.average}/>
+      <StatisticsLine text='positive' stat={props.pctPositive}/>
     </div>
   )
 }
@@ -52,10 +63,6 @@ const App = () => {
 
     const nums = [...goods, ...neutrals, ...bads]
 
-    if (nums.length === 0) {
-      return 'No feedback given'
-    }
-
     const numsSum = nums.reduce((acc, val) => acc + val, 0)
     const numsLength = nums.length
     return numsSum / numsLength
@@ -63,10 +70,6 @@ const App = () => {
 
   const calculatePctPositive = ({ good, neutral, bad }) => {
     const totalVotes = (good + neutral + bad)
-    if (totalVotes === 0) {
-      return 'No feedback given'
-    }
-
     return (good / totalVotes * 100) + '%'
   }
 
